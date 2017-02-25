@@ -8,20 +8,21 @@ Pour permettre une gestion plus claire de nos projets, nous aurons souvent besoi
 
 pour appeler tout ces reducers, nous devrons les combiner, on peux pour cela utiliser une `const` qui va regrouper les differents todo de la manière suivante :
 
- 	const todoApp = (state = {}, action) => {
-		return {
-			todos: todos(
-				state.todos,
-				action
-				),
-			visibilityFilter: visibilityFilter(
-				state.visibilityFilter,
-				action
-				)
-		};
+```javascript
+const todoApp = (state = {}, action) => {
+return {
+	todos: todos(
+		state.todos,
+		action
+		),
+	visibilityFilter: visibilityFilter(
+		state.visibilityFilter,
+		action
+		)
 	};
+};
 
-	const store = createStore(todoApp)
+const store = createStore(todoApp)```
 
 on combine donc tout nos reducer dans un objet qui sera envoyé au store.
 
@@ -33,15 +34,48 @@ La fonction `combineReducers()` nous evite de taper tout ce code et cree le redu
 
 voici la syntaxe :
 
-	import { combineReducers } from 'Redux'
+``` javascript
+import { combineReducers } from 'Redux'
 
-	const todoApp = combineReducers({
-		todos,
-		visibilityFilter
-		})
+const todoApp = combineReducers({
+todos,
+visibilityFilter
+})
 
-		// Syntaxe ES6
+// Syntaxe ES6
+```
 
 le peu de ligne de codes ci dessus permettent la creation du meme reducer combiné que celui du chapitre precedent, nous apprecierons le caractere menu du code.
 
 ## Redux: Implementer `combineReducers()` de zero
+
+Pour bien comprendre le fonctionnement de `combineReducers` on va recoder la fonction de zero
+
+```javascript
+const combineReducers = (reducers) => {
+	return (state = {}, action) => {
+		return Object.keys(reducers).reduce(
+			(nextState, key) => {
+				nextState[key] = reducers[key](
+					state[key],
+					action
+					);
+
+					// ici on set le nextState au state suivant grace au reducer invoqué
+
+					return nextState;
+			}
+
+			// on doit retourner un reducer, voila pourquoi le retour prend en parametre le
+			// state et l'action.
+
+			{}
+
+			// on initialise un objet vide en tant que prochain nextState
+			);
+	};
+};```
+
+
+
+On remarque ici que l'on modifie la donnée envoyé, ce qui, comme nous avons pu le voir, n'est pas une bonne pratique, mais le fait est que c'est le reducer lui meme qui cree l'objet, et non pas un objet que nous lui avons passer en parametre

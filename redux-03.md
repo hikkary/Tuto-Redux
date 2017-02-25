@@ -5,101 +5,104 @@
 
 Pour bien comprendre le fonctionnement du store, nous allons l'implementer nous même.
 
-	const createStore = (reducer) => {
-		let state;
+```javascript
+const createStore = (reducer) => {
+	let state;
 
-		// variable qui va stocker notre state
+	// variable qui va stocker notre state
 
-		let listener = [];
+	let listener = [];
 
-		// tableau permettant de stocker les listeners
+	// tableau permettant de stocker les listeners
 
-		const getState = () => state;
+	const getState = () => state;
 
-		const dispatch = (action) =>{
-			state = reducer(state, action)
+	const dispatch = (action) =>{
+		state = reducer(state, action)
 
-			// on met a jour le state grace au reducer au state actuel et l'action envoyé
+		// on met a jour le state grace au reducer au state actuel et l'action envoyé
 
-			listeners.forEach(listener => listener());
+		listeners.forEach(listener => listener());
 
-			// on notifie le changement aux listeners
-		};
+		// on notifie le changement aux listeners
+	};
 
-		const subscribe = (listener) => {
-			listeners.push(listener);
+	const subscribe = (listener) => {
+		listeners.push(listener);
 
-			return() => {
-				listeners = listeners.filter(l => l !== listener)
-			}
+		return() => {
+			listeners = listeners.filter(l => l !== listener)
+		}
 
-			// permet d'enlever les listener quand on en a plus l'utilité
-		};
+		// permet d'enlever les listener quand on en a plus l'utilité
+	};
 
-		dispatch({});
+	dispatch({});
 
-		// by the time is return, we want it to have the initial state populated,
-		// we are going to dispatch a dummy action
-		// just to get the reducer to return the initial value
+	// by the time is return, we want it to have the initial state populated,
+	// we are going to dispatch a dummy action
+	// just to get the reducer to return the initial value
 
-		return {getState, dispatch, suscribe};
-	}
-
+	return {getState, dispatch, suscribe};
+}
+```
 Voir pour des explications plus precise de listeners.
 
 ## Redux: Exemple de compteur sous React
 
 Sous react on ne peux plus utiliser la methode render utilisé precedemment :
 
-	const render = () => {
-		document.body.innerText = store.getState();
-	}
+```javascript
+const render = () => {
+	document.body.innerText = store.getState();
+}```
 
 il faut utilisé l'outil `ReactDOM.render` inclus
 
-	const Counter = ({
-		value,
-		onIncrement,
-		onDecrement
-		}) => (
-				<div>
-				<h1>{value}</h1>
-				<button onClick={onIncrement}>+</button>
-				<button onClick={onDecrement}>-</button>
-				</div>
-			);
+```javascript
+const Counter = ({
+	value,
+	onIncrement,
+	onDecrement
+	}) => (
+			<div>
+			<h1>{value}</h1>
+			<button onClick={onIncrement}>+</button>
+			<button onClick={onDecrement}>-</button>
+			</div>
+		);
 
-	// on cree un composant Counter qui va prendre en parametre 	
-	// les actions `INCREMENT` et `DECREMENT` ainsi que le state actuel
+// on cree un composant Counter qui va prendre en parametre 	
+// les actions `INCREMENT` et `DECREMENT` ainsi que le state actuel
 
-	const render = () => {
-		ReactDOM.render(
-			<Counter
-				value={store.getState()}
-				onIncrement={() =>
-					store.dispatch({
-						type: 'INCREMENT'
-						})
-				onDecrement={() =>
-					store.dispatch({
-						type: 'DECREMENT'
-						})
-				}
-				/>,
-				document.getElementById('root')
-			)
-	}
+const render = () => {
+	ReactDOM.render(
+		<Counter
+			value={store.getState()}
+			onIncrement={() =>
+				store.dispatch({
+					type: 'INCREMENT'
+					})
+			onDecrement={() =>
+				store.dispatch({
+					type: 'DECREMENT'
+					})
+			}
+			/>,
+			document.getElementById('root')
+		)
+}
 
-	// On utilise ici le composant créer plus haut, on lui passe en parametre l'etat actuel du state, ainsi que les deux actions
-	// que nous lions plus haut au button '+' et '-'
+// On utilise ici le composant créer plus haut, on lui passe en parametre l'etat actuel du state, ainsi que les deux actions
+// que nous lions plus haut au button '+' et '-'
 
-	store.subscribe(render);
+store.subscribe(render);
 
-	// Met a jour le Render dès le dispatch d'une action
+// Met a jour le Render dès le dispatch d'une action
 
-	render();
+render();
 
-	// render initial
+// render initial```
 
 ## Redux: Evité les mutations de tableau avec `concat()`,`slice()` et `...spread`
 

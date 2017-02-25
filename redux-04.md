@@ -16,17 +16,18 @@ Sous ES7 le spread operator permet egalement de modifier une valeurs de l'objet 
 >https://egghead.io/lessons/javascript-redux-writing-a-todo-list-reducer-adding-a-todo
 
 
-	export default (state = [], action) => {
-    switch (action.type) {
-        case ADD:
-            return [...state, action.payload];
-        case REMOVE:
-            return state.filter(task => task.id !== action.payload);
-        case EDIT:
-            return edit(state, action);
-        default: return state;
-    	}
+```javascript
+export default (state = [], action) => {
+switch (action.type) {
+    case ADD:
+        return [...state, action.payload];
+    case REMOVE:
+        return state.filter(task => task.id !== action.payload);
+    case EDIT:
+        return edit(state, action);
+    default: return state;
 	}
+}```
 
 voir Tuto Todo De Raph pour plus d'info
 

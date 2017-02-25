@@ -22,50 +22,51 @@ Voici un exemple avec un reducer pour l'exemple du compteur,
 
 un reducer prend en paramètre un `state` et une `action`, et retourne le `state` suivant.
 
-	counter = (state = 0, action) => {
-	   switch (action.type) {
-		   case INCREMENT:
-			   return state + 1;
-		   case REMOVED:
-			   return state - 1;
-		   default: return state;
-	   }
-	}
+```javascript
+counter = (state = 0, action) => {
+   switch (action.type) {
+	   case INCREMENT:
+		   return state + 1;
+	   case REMOVED:
+		   return state - 1;
+	   default: return state;
+   }
+}
 
-	expect (
-		counter (0, { type: 'INCREMENT'})
-	).toEqual(1)
+expect (
+	counter (0, { type: 'INCREMENT'})
+).toEqual(1)
 
-	// test incrementation
+// test incrementation
 
-	expect (
-		counter (1, { type: 'INCREMENT'})
-	).toEqual(2)
+expect (
+	counter (1, { type: 'INCREMENT'})
+).toEqual(2)
 
-	expect (
-		counter (2, { type: 'DECREMENT'})
-	).toEqual(1)
+expect (
+	counter (2, { type: 'DECREMENT'})
+).toEqual(1)
 
-	expect (
-		counter (1, { type: 'DECREMENT'})
-	).toEqual(0)
+expect (
+	counter (1, { type: 'DECREMENT'})
+).toEqual(0)
 
-	// test décrementation
+// test décrementation
 
-	expect (
-		counter (1, { type: 'SOMETHING_ELSE'})
-	).toEqual(1)
+expect (
+	counter (1, { type: 'SOMETHING_ELSE'})
+).toEqual(1)
 
-	// Fausse action doit retourner le state actuel
+// Fausse action doit retourner le state actuel
 
-	expect (
-		counter (undefined, {})
-	).toEqual(0)
+expect (
+	counter (undefined, {})
+).toEqual(0)
 
-	// pas de state doit retourner le state initial
+// pas de state doit retourner le state initial
 
-	console.log('test passed')
-
+console.log('test passed')
+```
 expect est une librairie qui permet de faire des test, elle prend
 un parametre une fonction et permet de verifier que le retour est conforme a ce que l'on attend.
 
@@ -77,19 +78,20 @@ quelques règle de base concernant les reducers:
 
 ## Redux : Methode du Store: getState(), dispatch() et suscribe()
 
-	import { createStore} from 'Redux'
+```javascript
+import { createStore} from 'Redux'
 
-	counter = (state = 0, action) => {
-	   switch (action.type) {
-		   case INCREMENT:
-			   return state + 1;
-		   case REMOVED:
-			   return state - 1;
-		   default: return state;
-	   }
-	}
+counter = (state = 0, action) => {
+   switch (action.type) {
+	   case INCREMENT:
+		   return state + 1;
+	   case REMOVED:
+		   return state - 1;
+	   default: return state;
+   }
+}
 
-	const store = createStore(counter)
+const store = createStore(counter)```
 
 Le store lie les trois principe de Redux :
 
@@ -106,26 +108,31 @@ Le store comporte 3 Methodes importante :
 
 - getState()
 
-		store.getState() recupère le state actuel du store
+	```javascript
+	store.getState() recupère le state actuel du store```
 
 - dispatch()
 
-		store.dispatch({type: 'INCREMENT'}) va retourner le state + 1
+	```javascript
+	store.dispatch({type: 'INCREMENT'}) va retourner le state + 1```
 
 - subscribe()
 
+	```javascript
 		store.subscribe(() => {
 			document.body.innerText = store.getState();
-		}); permet d'appeler un callBack apres chaque action
+		}); permet d appeler un callBack apres chaque action```
 
 	ici on va afficher le compteur apres chaque appel de l'action,
 	cependant on verra que le compteur ne s'initialisera pas a zero,
 	voici une syntaxe propre qui permettra un affichage correct du compteur.
 
-		const render = () => {
-			document.body.innerText = store.getState();
-		}
+	``` javascript
+	const render = () => {
+		document.body.innerText = store.getState();
+	}
 
-		store.subscribe(render);
-		render(); // render initial qui permet d'afficher le compteur a zero
-		(car aucune action n'a été faite)
+	store.subscribe(render);
+	render(); // render initial qui permet d'afficher le compteur a zero
+	(car aucune action n a été faite)
+```
